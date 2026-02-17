@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from './button'
 import { Form, LogIn, LogOut } from 'lucide-react'
 import { useState } from 'react'
-import AuthModal from './AuthModel'
+import AuthModal from './AuthModal'
 import { signOut } from '@/app/Action'
 const AuthButton = ({ user }) => {
 
@@ -32,10 +32,10 @@ const AuthButton = ({ user }) => {
         Sign In</Button>
 
 
-      <AuthModel
-        open={showAuthModel}
-        onClose={() => setShowAuthModel(false)}
-      />
+      <AuthModal
+  open={showAuthModel}
+  onOpenChange={setShowAuthModel}
+/>
     </>
   )
 }

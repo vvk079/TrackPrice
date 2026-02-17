@@ -5,7 +5,7 @@ import { Button } from './button'
 import { Loader2 } from "lucide-react"
 import { addProduct } from '@/app/Action'
 import { toast } from 'sonner'
-import AuthModal from './AuthModel'
+import AuthModal from './AuthModal'
 const AddProductForm = ({ user }) => {
 
   const [url, setUrl] = useState("")
