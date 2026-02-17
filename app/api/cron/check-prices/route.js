@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/utills/SupaBase/Server";
+import { createAdminClient } from "@/utills/SupaBase/Server";
 import { scrapeProduct } from "@/lib/Firecrawl";
 import { sendPriceDropAlert } from "@/lib/email";
 
@@ -16,7 +16,7 @@ export async function POST(request) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
         }
 
-        const supabase = await createClient();
+        const supabase = createAdminClient();
 
         const { data: products, error: productsError } = await supabase
             .from("products")
@@ -104,3 +104,5 @@ export async function POST(request) {
         return NextResponse.json({ error: error.message }, { status: 500 })
     }
 }
+
+// curl -X POST https://dealbee.vercel.app/api/cron/check-prices -H "Authorization: Bearer 6a51b986a851687f684915eaa15cde9d8079881b2327c450f76ebc2a5ff3afd5"
