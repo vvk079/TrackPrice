@@ -56,18 +56,25 @@ export async function POST(request) {
                     })
                     .eq("id", product.id)
 
+                // Always record price history for a richer timeline
+                await supabase
+                    .from("price_history")
+                    .insert({
+                        product_id: product.id,
+                        price: newPrice,
+                        currency: productData.currencyCode || product.currency,
+                        checked_at: new Date().toISOString()
+                    })
+
                 if (oldPrice !== newPrice) {
-                    await supabase
-                        .from("price_history")
-                        .insert({
-                            product_id: product.id,
-                            price: newPrice,
-                            currency: productData.currencyCode || product.currency,
-                            checked_at: new Date().toISOString()
-                        })
                     result.priceChanges++;
 
-                    if (newPrice < oldPrice) {
+                    // Smart alerts: use target_price if set, otherwise alert on any drop
+                    const shouldAlert = product.target_price
+                        ? (newPrice <= parseFloat(product.target_price) && oldPrice > parseFloat(product.target_price))
+                        : (newPrice < oldPrice);
+
+                    if (shouldAlert) {
                         // Using admin to get user email if RLS restricts it
                         const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(product.user_id);
 

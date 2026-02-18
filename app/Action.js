@@ -71,16 +71,12 @@ export async function addProduct(formData) {
             }
         }
 
-        const shouldAddHistory =
-            !isUpdate || existingProduct.current_price !== newPrice
-
-        if (shouldAddHistory) {
-            await supabase.from("price_history").insert({
-                product_id: product.id,
-                price: newPrice,
-                currency: currency,
-            })
-        }
+        // Always record price history so the chart has a data point from day one
+        await supabase.from("price_history").insert({
+            product_id: product.id,
+            price: newPrice,
+            currency: currency,
+        })
 
         revalidatePath("/")
         return {
@@ -162,5 +158,77 @@ export async function getPriceHistory(productId) {
     } catch (error) {
         console.error("get price history error: ", error.message || error)
         return []
+    }
+}
+
+export async function updateTargetPrice(productId, targetPrice) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) {
+            return { error: "Not authenticated" }
+        }
+
+        const value = targetPrice === null || targetPrice === ""
+            ? null
+            : parseFloat(targetPrice)
+
+        const { error } = await supabase
+            .from("products")
+            .update({ target_price: value })
+            .eq("id", productId)
+            .eq("user_id", user.id)
+
+        if (error) throw error
+
+        revalidatePath("/")
+        return {
+            success: true,
+            message: value ? "Target price set!" : "Target price removed"
+        }
+    } catch (error) {
+        console.error("update target price error:", error)
+        return { error: "Failed to update target price" }
+    }
+}
+
+export async function getPriceStats(productId) {
+    try {
+        const supabase = await createClient()
+
+        const { data, error } = await supabase
+            .from("price_history")
+            .select("price, checked_at")
+            .eq("product_id", productId)
+            .order("checked_at", { ascending: true })
+
+        if (error) throw error
+        if (!data || data.length === 0) return null
+
+        const prices = data.map(d => parseFloat(d.price))
+        const lowest = Math.min(...prices)
+        const highest = Math.max(...prices)
+        const average = prices.reduce((a, b) => a + b, 0) / prices.length
+        const firstPrice = prices[0]
+        const latestPrice = prices[prices.length - 1]
+        const percentChange = firstPrice > 0
+            ? (((latestPrice - firstPrice) / firstPrice) * 100).toFixed(1)
+            : 0
+
+        return {
+            lowest,
+            highest,
+            average: parseFloat(average.toFixed(2)),
+            firstPrice,
+            latestPrice,
+            percentChange: parseFloat(percentChange),
+            totalEntries: prices.length,
+            firstTracked: data[0].checked_at,
+            lastChecked: data[data.length - 1].checked_at,
+        }
+    } catch (error) {
+        console.error("get price stats error:", error)
+        return null
     }
 }
