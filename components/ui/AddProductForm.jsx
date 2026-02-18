@@ -40,36 +40,32 @@ const AddProductForm = ({ user }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
-        <div className="flex flex-cols sm:flex-row gap-2">
-          <Input placeholder='Enter Product URL'
+      <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto group">
+        <div className="flex flex-col sm:flex-row gap-4 p-2 bg-secondary/50 backdrop-blur-sm border border-border rounded-2xl shadow-2xl shadow-primary/5 focus-within:border-primary/50 transition-all duration-300">
+          <Input
+            placeholder='Paste product URL here...'
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="h-12 text-base"
+            className="h-14 bg-transparent border-none text-lg focus-visible:ring-0 placeholder:text-muted-foreground/50"
             required
             disabled={loading}
           />
 
-
-          <Button className="bg-pink-500 hover:bg-pink-600 h-10 sm:h-12
-      px-8"
+          <Button
+            className="bg-primary hover:bg-primary/90 text-primary-foreground h-14 px-10 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95"
             type="submit"
             disabled={loading}
-            size="lg">
-            {
-              loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Adding...
-                </>
-              ) : (
-                "Track Price"
-              )
-            }
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Searching...
+              </>
+            ) : (
+              "Track Price"
+            )}
           </Button>
         </div>
-
-
       </form>
       {/*Auth Model*/}
       <AuthModal

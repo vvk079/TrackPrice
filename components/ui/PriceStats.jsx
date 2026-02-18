@@ -37,33 +37,33 @@ export default function PriceStats({ productId, currentPrice, currency }) {
         {
             label: "Lowest Ever",
             value: `${currency} ${stats.lowest}`,
-            color: "text-green-600",
-            bg: "bg-green-50",
-            borderColor: "border-green-200",
+            color: "text-green-500",
+            bg: "bg-green-500/10",
+            borderColor: "border-green-500/20",
             icon: <ArrowDownRight className="w-3.5 h-3.5" />,
         },
         {
             label: "Highest Ever",
             value: `${currency} ${stats.highest}`,
             color: "text-red-500",
-            bg: "bg-red-50",
-            borderColor: "border-red-200",
+            bg: "bg-red-500/10",
+            borderColor: "border-red-500/20",
             icon: <TrendingUp className="w-3.5 h-3.5" />,
         },
         {
             label: "Average",
             value: `${currency} ${stats.average}`,
-            color: "text-blue-600",
-            bg: "bg-blue-50",
-            borderColor: "border-blue-200",
+            color: "text-primary",
+            bg: "bg-primary/10",
+            borderColor: "border-primary/20",
             icon: <Minus className="w-3.5 h-3.5" />,
         },
         {
             label: "Since Tracking",
             value: `${stats.percentChange > 0 ? "+" : ""}${stats.percentChange}%`,
-            color: stats.percentChange <= 0 ? "text-green-600" : "text-red-500",
-            bg: stats.percentChange <= 0 ? "bg-green-50" : "bg-red-50",
-            borderColor: stats.percentChange <= 0 ? "border-green-200" : "border-red-200",
+            color: stats.percentChange <= 0 ? "text-green-500" : "text-red-500",
+            bg: stats.percentChange <= 0 ? "bg-green-500/10" : "bg-red-500/10",
+            borderColor: stats.percentChange <= 0 ? "border-green-500/20" : "border-red-500/20",
             icon: stats.percentChange <= 0
                 ? <TrendingDown className="w-3.5 h-3.5" />
                 : <TrendingUp className="w-3.5 h-3.5" />,
@@ -71,42 +71,42 @@ export default function PriceStats({ productId, currentPrice, currency }) {
     ];
 
     return (
-        <div className="w-full mt-4">
+        <div className="w-full">
             {/* Badges */}
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="flex flex-wrap gap-2 mb-6">
                 {isAllTimeLow && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-500 border border-orange-500/20 shadow-sm animate-pulse">
                         <Flame className="w-3 h-3" />
-                        All-Time Low!
+                        All-Time Low
                     </span>
                 )}
                 {isAllTimeHigh && !isAllTimeLow && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/20">
                         <TrendingUp className="w-3 h-3" />
                         All-Time High
                     </span>
                 )}
                 {savings > 0 && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary/20 text-primary border border-primary/20">
                         💰 You save {currency} {savings.toFixed(2)}
                     </span>
                 )}
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {statItems.map((item) => (
                     <div
                         key={item.label}
-                        className={`${item.bg} ${item.borderColor} border rounded-lg px-3 py-2.5 text-center`}
+                        className={`${item.bg} ${item.borderColor} border rounded-2xl px-3 py-4 text-center transition-transform hover:scale-105 duration-300`}
                     >
-                        <div className={`flex items-center justify-center gap-1 ${item.color} mb-1`}>
+                        <div className={`flex items-center justify-center gap-1 ${item.color} mb-1 opacity-70`}>
                             {item.icon}
-                            <span className="text-[11px] font-medium uppercase tracking-wide">
+                            <span className="text-[9px] font-black uppercase tracking-widest">
                                 {item.label}
                             </span>
                         </div>
-                        <div className={`text-sm font-bold ${item.color}`}>
+                        <div className={`text-base font-black ${item.color}`}>
                             {item.value}
                         </div>
                     </div>
@@ -114,9 +114,12 @@ export default function PriceStats({ productId, currentPrice, currency }) {
             </div>
 
             {/* Tracking info */}
-            <p className="text-[11px] text-gray-400 mt-2 text-right">
-                {stats.totalEntries} price check{stats.totalEntries !== 1 ? "s" : ""} since{" "}
-                {new Date(stats.firstTracked).toLocaleDateString()}
+            <p className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground/40 mt-4 text-right">
+                {stats.totalEntries} sessions • Since{" "}
+                {new Date(stats.firstTracked).toLocaleDateString("en-IN", {
+                    month: "short",
+                    year: "numeric",
+                })}
             </p>
         </div>
     );

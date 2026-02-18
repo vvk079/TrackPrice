@@ -34,21 +34,23 @@ export function AuthModal({ open, onClose }) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
 
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you&apos;re
-            done.
+      <DialogContent className="sm:max-w-md bg-card border-border shadow-2xl">
+        <DialogHeader className="space-y-3">
+          <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
+            <TrendingDown className="h-6 w-6 text-primary" />
+          </div>
+          <DialogTitle className="text-2xl font-black tracking-tight">Join TrackPrice</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Sign in to start tracking prices and get instant alerts on your favorite products.
           </DialogDescription>
         </DialogHeader>
 
-        <div className='flex flex-col gap-4 py-4'>
+        <div className="py-6">
           <Button
             onClick={handleSubmit}
-            variant="outline"
-            className="w-full gap-2"
-            size="lg" >
+            variant="secondary"
+            className="w-full h-14 gap-3 rounded-2xl font-bold bg-secondary hover:bg-secondary/80 border border-border transition-all duration-300"
+          >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
@@ -67,12 +69,13 @@ export function AuthModal({ open, onClose }) {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            continue with Goggle
-
+            <span className="text-foreground">Continue with Google</span>
           </Button>
         </div>
 
-
+        <p className="text-[10px] text-center text-muted-foreground/50 uppercase font-bold tracking-widest pb-2">
+          Secure Authentication via Supabase
+        </p>
       </DialogContent>
 
     </Dialog>

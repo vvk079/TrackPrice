@@ -18,7 +18,7 @@ export default async function Home() {
   } = await supabase.auth.getUser();
 
 
-  const products = user ?   await getProducts() : []; 
+  const products = user ? await getProducts() : [];
 
 
 
@@ -43,98 +43,108 @@ export default async function Home() {
     },
   ];
   return (
-    <main className="min-h-screen bg-linear-to-br from-pink-50 via-white 
-    to-pink-50 ">
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200
-      sticky top-0 z-10">
-        <div className=" max-w-7xl mx-auto px-4 py-4 flex justify-between iteams-center">
-          <div className="flex items-center gap-3">
-            <Image src="/image.png" alt="logo"
-              width={600}
-              height={200}
-              className="h-10 w-auto"
-            />
+    <main className="min-h-screen bg-background text-foreground selection:bg-pink-500/30">
+      <header className="bg-background/60 backdrop-blur-xl border-b border-border sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-center">
+          <div className="flex items-center gap-4">
+            <div className="p-2 bg-primary/10 rounded-xl border border-primary/20">
+              <Image src="/image.png" alt="logo"
+                width={40}
+                height={40}
+                className="h-8 w-auto invert dark:invert-0"
+              />
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
+              TrackPrice
+            </span>
           </div>
 
-          {/* auth button */}
           <AuthButton user={user} />
-
-
-
         </div>
       </header>
 
-      <section className="py-20 px-4" >
-        <div className="max-w-7xl mx-auto text-center">
-          <h3 className="text-5xl font-bold text-gray-900 mb-4 tracking-tight">Never Miss a Price Drop Again</h3>
-          <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-            Track prices on thousands of products and get notified when they drop
+      <section className="relative py-24 px-6 overflow-hidden">
+        {/* Abstract Background Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-primary/20 blur-[120px] rounded-full -z-10 opacity-50" />
+
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-[1.1]">
+            Track Prices <br />
+            <span className="bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
+              Effortlessly
+            </span>
+          </h1>
+          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+            Never pay full price again. Monitor thousands of products across all major e-commerce sites with smart instant alerts.
           </p>
 
-
-          {/* add product form */}
           <AddProductForm user={user} />
-          {/* feature  */}
+
           {products.length === 0 && (
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16">
+            <div className="grid md:grid-cols-3 gap-8 mt-24">
               {FEATURES.map(({ icon: Icon, title, description }) => (
                 <div
                   key={title}
-                  className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm"
+                  className="group relative bg-card p-8 rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-primary/10"
                 >
-                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                    <Icon className="h-6 w-6 text-pink-600" />
+                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+                    <Icon className="h-7 w-7 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-bold mb-3 tracking-tight">
                     {title}
                   </h3>
-                  <p className="text-gray-600">{description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {description}
+                  </p>
                 </div>
               ))}
             </div>
           )}
-
         </div>
-
-
-
-
       </section>
 
-      {user && products.length>0 && (
-        <section className="max-w-7xl mx-auto px-4 pb-20">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">
-             Your Tracked Products</h3>
-            <span className="text-sm text-gray-500">
-              {products.length} {products.length === 1 ? "product" : "products"}
-            </span>
+      {user && products.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 pb-24">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight">Your Tracking List</h2>
+              <p className="text-muted-foreground text-sm mt-1">Manage your active product monitors</p>
+            </div>
+            <div className="px-4 py-2 bg-secondary rounded-full border border-border">
+              <span className="text-sm font-semibold">
+                {products.length} {products.length === 1 ? "Product" : "Products"}
+              </span>
+            </div>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 items-start">
-            {products.map((product)=>(
-              <ProductCard key={product.id} product={product}/>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 items-start">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
-
           </div>
-        
-      </section>)}
-
-      {user && products.length ===0 && (
-        <section className="max-w-2xl mx-auto pb-20 px-4 text-center" >
-          <div className="bg-white rounded-xl border-2 border-dashed border-gray-300
-          p-12">
-            <TrendingDown className="w-16 h-16 text-gray-400 mx-auto mb-4"/>
-            <h3 className="text-xl font-semibold text-gray-900 
-            mb-2">No Products Added</h3>
-            <p className="text-gray-600 ">Add your first product to get started</p>
-            <Button>Add Product</Button>
-
-          </div>
-          
         </section>
       )}
 
+      {user && products.length === 0 && (
+        <section className="max-w-2xl mx-auto pb-24 px-6 text-center" >
+          <div className="bg-card/50 rounded-3xl border-2 border-dashed border-border p-16 backdrop-blur-sm">
+            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+              <TrendingDown className="w-10 h-10 text-muted-foreground opacity-50" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3 tracking-tight">No Products Tracked</h3>
+            <p className="text-muted-foreground mb-8 text-lg">Your watchlist is currently empty. Add your first product URL above to start saving.</p>
+            <Button size="lg" variant="secondary" className="px-10 h-14 rounded-full font-bold shadow-xl shadow-primary/10">
+              Get Started
+            </Button>
+          </div>
+        </section>
+      )}
+
+      <footer className="py-12 border-t border-border bg-card/30">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-muted-foreground text-sm">© 2024 TrackPrice. Built for shoppers who love a good deal.</p>
+        </div>
+      </footer>
     </main>
   );
 }

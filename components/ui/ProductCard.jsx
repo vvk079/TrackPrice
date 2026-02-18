@@ -68,148 +68,156 @@ const ProductCard = ({ product }) => {
     }
 
     return (
-        <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className={"pb-3"}>
-                <div className="flex gap-4">
+        <Card className="bg-card border-border hover:border-primary/30 transition-all duration-500 overflow-hidden group shadow-sm hover:shadow-primary/5">
+            <CardHeader className="pb-6">
+                <div className="flex gap-6">
                     {product.img_url && (
-                        <img
-                            src={product.img_url}
-                            alt={product.name}
-                            className=" w-20 h-20 rounded-md object-cover border"
-                        />
+                        <div className="relative w-24 h-24 shrink-0 rounded-2xl overflow-hidden border border-border bg-muted/30">
+                            <img
+                                src={product.img_url}
+                                alt={product.name}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            />
+                        </div>
                     )}
 
-                    <div className="flex-1 min-w-0">
-                        <h3 className='font-semibold text-gray-900 
-            line-clamp-2 mb-2'>{product.name}</h3>
-                        <div className=' flex items-baseline gap-2 flex-wrap'>
-                            <span className='text-3xl font-bold text-gray-500'>
+                    <div className="flex-1 min-w-0 space-y-2">
+                        <h3 className="font-bold text-foreground text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                            {product.name}
+                        </h3>
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-3xl font-black text-primary">
                                 {product.currency} {product.current_price}
                             </span>
-                            <Badge variant="secondary" className="gap-1">
-                                <TrendingDown className="w-4 h-4" />
+                            <Badge variant="secondary" className="bg-primary/10 text-primary border-none font-bold px-3 py-1">
+                                <TrendingDown className="w-3.5 h-3.5 mr-1" />
                                 Tracking
                             </Badge>
                         </div>
 
                         {/* Target Price Display */}
                         {targetPrice && !editingTarget && (
-                            <div className="mt-2 flex items-center gap-2">
-                                <Badge className="gap-1 bg-pink-100 text-pink-700 hover:bg-pink-200 cursor-pointer"
-                                    onClick={() => setEditingTarget(true)}>
-                                    <Target className="w-3 h-3" />
+                            <div className="flex items-center gap-2 pt-1 transition-all animate-in fade-in slide-in-from-left-2">
+                                <Badge
+                                    className="gap-1.5 bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground transition-all cursor-pointer border-none px-3 py-1.5 rounded-full shadow-sm"
+                                    onClick={() => setEditingTarget(true)}
+                                >
+                                    <Target className="w-3.5 h-3.5" />
                                     Target: {product.currency} {targetPrice}
                                 </Badge>
                                 {parseFloat(product.current_price) <= targetPrice && (
-                                    <Badge className="bg-green-100 text-green-700 text-[11px]">
-                                        ✅ Below target!
-                                    </Badge>
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 text-green-500 rounded-full text-xs font-bold animate-pulse">
+                                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                                        Below Target
+                                    </div>
                                 )}
                             </div>
                         )}
-
                     </div>
-
                 </div>
             </CardHeader>
-            <CardContent >
+            <CardContent className="space-y-6">
                 {/* Target Price Editor */}
                 {editingTarget && (
-                    <div className="flex items-center gap-2 mb-3 p-3 bg-pink-50 rounded-lg border border-pink-200">
-                        <Target className="w-4 h-4 text-pink-500 shrink-0" />
-                        <span className="text-sm text-gray-600 shrink-0">Target:</span>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            placeholder="Enter target price"
-                            value={targetInput}
-                            onChange={(e) => setTargetInput(e.target.value)}
-                            className="h-8 w-32 text-sm"
-                            disabled={savingTarget}
-                        />
-                        <Button size="sm" variant="ghost"
-                            onClick={handleSaveTarget}
-                            disabled={savingTarget || !targetInput}
-                            className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50">
-                            {savingTarget ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                        </Button>
-                        {targetPrice && (
-                            <Button size="sm" variant="ghost"
-                                onClick={handleClearTarget}
+                    <div className="flex items-center gap-3 p-4 bg-secondary/50 rounded-2xl border border-primary/20 animate-in zoom-in-95 duration-300">
+                        <div className="p-2 bg-primary/20 rounded-lg">
+                            <Target className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="flex-1 flex items-center gap-2">
+                            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Target</span>
+                            <Input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                placeholder="0.00"
+                                value={targetInput}
+                                onChange={(e) => setTargetInput(e.target.value)}
+                                className="h-10 bg-background border-border text-sm font-bold focus-visible:ring-primary/30"
                                 disabled={savingTarget}
-                                className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:bg-red-50">
-                                <Trash2 className="w-3.5 h-3.5" />
+                            />
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Button size="icon" variant="ghost"
+                                onClick={handleSaveTarget}
+                                disabled={savingTarget || !targetInput}
+                                className="h-10 w-10 text-green-500 hover:bg-green-500/10">
+                                {savingTarget ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-5 h-5" />}
                             </Button>
-                        )}
-                        <Button size="sm" variant="ghost"
-                            onClick={() => setEditingTarget(false)}
-                            className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600">
-                            <X className="w-4 h-4" />
-                        </Button>
+                            {targetPrice && (
+                                <Button size="icon" variant="ghost"
+                                    onClick={handleClearTarget}
+                                    disabled={savingTarget}
+                                    className="h-10 w-10 text-destructive hover:bg-destructive/10">
+                                    <Trash2 className="w-4 h-4" />
+                                </Button>
+                            )}
+                            <Button size="icon" variant="ghost"
+                                onClick={() => setEditingTarget(false)}
+                                className="h-10 w-10 text-muted-foreground hover:bg-muted">
+                                <X className="w-5 h-5" />
+                            </Button>
+                        </div>
                     </div>
                 )}
 
-                <div className='flex flex-wrap gap-2'>
-                    <Button variant='outline'
-                        onClick={() => setShowChart(!showChart)}>
+                <div className="flex flex-wrap gap-3">
+                    <Button
+                        variant={showChart ? "secondary" : "outline"}
+                        className={`font-bold transition-all duration-300 rounded-xl ${showChart ? 'bg-primary/20 text-primary border-primary/30' : ''}`}
+                        onClick={() => setShowChart(!showChart)}
+                    >
                         {showChart ? (
                             <>
-                                <ChevronsUp className="w-4 h-4" />
-                                Hide Chart
+                                <ChevronsUp className="w-4 h-4 mr-2" />
+                                Hide Insights
                             </>
                         ) : (
                             <>
-                                <ChevronsDown className="w-4 h-4" />
-                                Show Chart
+                                <ChevronsDown className="w-4 h-4 mr-2" />
+                                Show Insights
                             </>
                         )}
                     </Button>
 
                     {!targetPrice && !editingTarget && (
-                        <Button variant="outline" size="sm"
+                        <Button variant="outline"
                             onClick={() => setEditingTarget(true)}
-                            className="gap-1 text-pink-600 hover:text-pink-700 hover:bg-pink-50">
-                            <Target className="w-4 h-4" />
-                            Set Target Price
+                            className="font-bold rounded-xl border-primary/20 text-primary hover:bg-primary/10 transition-colors">
+                            <Target className="w-4 h-4 mr-2" />
+                            Set Target
                         </Button>
                     )}
 
-                    <Button variant="outline"
-                        size="sm" asChild className="gap-1" >
+                    <Button variant="outline" asChild className="font-bold rounded-xl">
                         <Link href={product.url} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="w-4 h-4" />
-                            Visit Product
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Buy Now
                         </Link>
-
                     </Button>
 
                     <Button
-                        variant="outline"
-                        size="sm"
+                        variant="ghost"
                         onClick={handleDelete}
                         disabled={deleting}
-                        className="gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="font-bold text-destructive hover:bg-destructive/10 rounded-xl ml-auto"
                     >
                         {deleting ? (
-                            <>
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                                Deleting...
-                            </>
+                            <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
-                            <>
-                                <Trash2 className="w-4 h-4" />
-                                Remove
-                            </>
+                            <Trash2 className="w-4 h-4" />
                         )}
                     </Button>
                 </div>
             </CardContent>
-            {showChart && (<CardFooter className="pt-0 flex-col">
-                <PriceChart productId={product.id} currentPrice={product.current_price} currency={product.currency} targetPrice={targetPrice} />
-                <PriceStats productId={product.id} currentPrice={product.current_price} currency={product.currency} />
-                <PriceHistoryTable productId={product.id} currency={product.currency} />
-            </CardFooter>)}
+            {showChart && (
+                <CardFooter className="pt-6 flex-col gap-8 bg-secondary/20 border-t border-border animate-in slide-in-from-top-4 duration-500">
+                    <div className="w-full space-y-8">
+                        <PriceChart productId={product.id} currentPrice={product.current_price} currency={product.currency} targetPrice={targetPrice} />
+                        <PriceStats productId={product.id} currentPrice={product.current_price} currency={product.currency} />
+                        <PriceHistoryTable productId={product.id} currency={product.currency} />
+                    </div>
+                </CardFooter>
+            )}
         </Card>
     );
 }
