@@ -13,9 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { TrendingDown } from "lucide-react"
 import { createClient } from '@/utills/SupaBase/Client'
 
-export function AuthModal({ open, onClose }) {
+export function AuthModal({ open, onOpenChange }) {
 
   const supabase = createClient()
 
@@ -32,14 +33,14 @@ export function AuthModal({ open, onClose }) {
 
   }
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
 
       <DialogContent className="sm:max-w-md bg-card border-border shadow-2xl">
         <DialogHeader className="space-y-3">
           <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
             <TrendingDown className="h-6 w-6 text-primary" />
           </div>
-          <DialogTitle className="text-2xl font-black tracking-tight">Join TrackPrice</DialogTitle>
+          <DialogTitle className="text-2xl font-black tracking-tight">Join dealbee</DialogTitle>
           <DialogDescription className="text-muted-foreground">
             Sign in to start tracking prices and get instant alerts on your favorite products.
           </DialogDescription>

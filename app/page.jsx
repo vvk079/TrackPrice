@@ -47,15 +47,8 @@ export default async function Home() {
       <header className="bg-background/60 backdrop-blur-xl border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-center">
           <div className="flex items-center gap-4">
-            <div className="p-2 bg-primary/10 rounded-xl border border-primary/20">
-              <Image src="/image.png" alt="logo"
-                width={40}
-                height={40}
-                className="h-8 w-auto invert dark:invert-0"
-              />
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              TrackPrice
+            <span className="text-xl font-black bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent tracking-tighter hover:opacity-80 transition-opacity">
+              dealbee <span className="font-medium text-muted-foreground/60">| track the deal</span>
             </span>
           </div>
 
@@ -68,24 +61,27 @@ export default async function Home() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-primary/20 blur-[120px] rounded-full -z-10 opacity-50" />
 
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-[1.1]">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700">
             Track Prices <br />
             <span className="bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
               Effortlessly
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
             Never pay full price again. Monitor thousands of products across all major e-commerce sites with smart instant alerts.
           </p>
 
-          <AddProductForm user={user} />
+          <div className="animate-in fade-in zoom-in-95 duration-700 delay-500">
+            <AddProductForm user={user} />
+          </div>
 
           {products.length === 0 && (
             <div className="grid md:grid-cols-3 gap-8 mt-24">
-              {FEATURES.map(({ icon: Icon, title, description }) => (
+              {FEATURES.map(({ icon: Icon, title, description }, index) => (
                 <div
                   key={title}
-                  className="group relative bg-card p-8 rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-primary/10"
+                  className="group relative bg-card p-8 rounded-2xl border border-border hover:border-primary/50 transition-all duration-500 shadow-sm hover:shadow-primary/10 animate-in fade-in slide-in-from-bottom-10"
+                  style={{ animationDelay: `${700 + index * 150}ms`, animationFillMode: 'both' }}
                 >
                   <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
                     <Icon className="h-7 w-7 text-primary" />
@@ -142,7 +138,7 @@ export default async function Home() {
 
       <footer className="py-12 border-t border-border bg-card/30">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-muted-foreground text-sm">© 2024 TrackPrice. Built for shoppers who love a good deal.</p>
+          <p className="text-muted-foreground text-sm">© 2024 dealbee. Built for shoppers who love a good deal.</p>
         </div>
       </footer>
     </main>

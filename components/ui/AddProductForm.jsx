@@ -70,7 +70,7 @@ const AddProductForm = ({ user }) => {
       {/*Auth Model*/}
       <AuthModal
         open={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
+        onOpenChange={setShowAuthModal}
       />
 
     </>

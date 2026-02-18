@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/sonner";
 
 
 export const metadata = {
-  title: "TrackPrice - Never Miss a Price Drop",
-  description: "Monitor product prices and get notified on price drops",
+  title: "dealbee - never pay full again",
+  description: "Track prices of your favorite products effortlessly with dealbee.",
 };
 
 export default function RootLayout({ children }) {

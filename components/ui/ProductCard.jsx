@@ -68,7 +68,7 @@ const ProductCard = ({ product }) => {
     }
 
     return (
-        <Card className="bg-card border-border hover:border-primary/30 transition-all duration-500 overflow-hidden group shadow-sm hover:shadow-primary/5">
+        <Card className="bg-card border-border hover:border-primary/30 transition-all duration-500 overflow-hidden group shadow-sm hover:shadow-primary/5 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <CardHeader className="pb-6">
                 <div className="flex gap-6">
                     {product.img_url && (
