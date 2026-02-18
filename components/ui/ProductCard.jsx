@@ -14,6 +14,7 @@ import { ExternalLink } from 'lucide-react'
 import { Trash2 } from 'lucide-react'
 import PriceChart from './PriceChart'
 import PriceStats from './PriceStats'
+import PriceHistoryTable from './PriceHistoryTable'
 
 const ProductCard = ({ product }) => {
     const [showChart, setShowChart] = useState(false)
@@ -207,6 +208,7 @@ const ProductCard = ({ product }) => {
             {showChart && (<CardFooter className="pt-0 flex-col">
                 <PriceChart productId={product.id} currentPrice={product.current_price} currency={product.currency} targetPrice={targetPrice} />
                 <PriceStats productId={product.id} currentPrice={product.current_price} currency={product.currency} />
+                <PriceHistoryTable productId={product.id} currency={product.currency} />
             </CardFooter>)}
         </Card>
     );
